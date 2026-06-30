@@ -1,81 +1,14 @@
 import { Component, input, output, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { TableColumn } from '../../../core/models/table-column.model';
-import { StatusTextPipe } from '../../pipes/status-text.pipe';
-import { StatusColorDirective } from '../../directives/status-color.directive';
+import { TableColumn } from '@core/models/table-column.model';
+import { StatusTextPipe } from '@shared/pipes/status-text.pipe';
+import { StatusColorDirective } from '@shared/directives/status-color.directive';
 
 @Component({
   selector: 'app-data-table',
   standalone: true,
   imports: [StatusTextPipe, StatusColorDirective, DatePipe],
-  template: `
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm text-left">
-        <thead class="bg-gray-50 border-b">
-          <tr>
-            @for (col of columns(); track col.key) {
-              <th
-                class="px-4 py-3 font-medium text-gray-700 cursor-pointer select-none"
-                (click)="col.sortable && toggleSort(col.key)"
-              >
-                {{ col.label }}
-                @if (col.sortable && sortKey() === col.key) {
-                  <span class="ml-1 text-xs">{{ sortDir() === 'asc' ? '(A-Z)' : '(Z-A)' }}</span>
-                }
-              </th>
-            }
-            <th class="px-4 py-3 font-medium text-gray-700">Islemler</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-          @for (row of data(); track row.id) {
-            <tr class="hover:bg-gray-50">
-              @for (col of columns(); track col.key) {
-                <td class="px-4 py-3">
-                  @if (col.type === 'badge') {
-                    <span
-                      statusColor="{{ row[col.key] }}"
-                      class="px-2 py-1 rounded-full text-sm font-medium"
-                    >
-                      {{ row[col.key] | statusText }}
-                    </span>
-                  } @else if (col.type === 'stars') {
-                    {{ row[col.key] || 0 }} / 5
-                  } @else if (col.type === 'date') {
-                    {{ row[col.key] | date:'dd.MM.yyyy' }}
-                  } @else {
-                    {{ row[col.key] }}
-                  }
-                </td>
-              }
-              <td class="px-2 sm:px-4 py-3">
-                <div class="flex flex-col sm:flex-row gap-1 sm:gap-2">
-                  <button
-                    class="text-xs sm:text-sm text-blue-600 hover:text-blue-800 whitespace-nowrap px-1 sm:px-2 py-1"
-                    (click)="edit.emit(row)"
-                  >
-                    Duzenle
-                  </button>
-                  <button
-                    class="text-xs sm:text-sm text-red-600 hover:text-red-800 whitespace-nowrap px-1 sm:px-2 py-1"
-                    (click)="delete.emit(row)"
-                  >
-                    Sil
-                  </button>
-                </div>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td [attr.colspan]="columns().length + 1" class="text-center py-8 text-gray-500">
-                Kayit bulunamadi
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  `,
+  templateUrl: "./data-table.component.html",
 })
 export class DataTableComponent {
   readonly columns = input.required<TableColumn[]>();

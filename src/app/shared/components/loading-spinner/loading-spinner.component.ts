@@ -3,16 +3,7 @@ import { Component, input } from '@angular/core';
 @Component({
   selector: 'app-loading-spinner',
   standalone: true,
-  template: `
-    @if (loading()) {
-      <div class="flex justify-center items-center py-8">
-        <div class="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-        @if (label()) {
-          <span class="ml-3 text-gray-500">{{ label() }}</span>
-        }
-      </div>
-    }
-  `,
+  templateUrl: "./loading-spinner.component.html",
 })
 export class LoadingSpinnerComponent {
   readonly loading = input.required<boolean>();
