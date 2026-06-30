@@ -2,9 +2,9 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BooksService } from '../../services/books.service';
-import { scoreValidator } from '../../../../shared/validators/score-validator';
-import { FormFieldComponent } from '../../../../shared/components/form-field/form-field.component';
-import { CanComponentDeactivate } from '../../../../core/guards/unsaved-changes.guard';
+import { scoreValidator } from '@shared/validators/score-validator';
+import { FormFieldComponent } from '@shared/components/form-field/form-field.component';
+import { CanComponentDeactivate } from '@core/guards/unsaved-changes.guard';
 
 @Component({
   selector: 'app-books-form',
