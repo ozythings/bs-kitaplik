@@ -48,19 +48,21 @@ import { StatusColorDirective } from '../../directives/status-color.directive';
                   }
                 </td>
               }
-              <td class="px-4 py-3">
-                <button
-                  class="text-blue-600 hover:text-blue-800 mr-3"
-                  (click)="edit.emit(row)"
-                >
-                  Duzenle
-                </button>
-                <button
-                  class="text-red-600 hover:text-red-800"
-                  (click)="delete.emit(row)"
-                >
-                  Sil
-                </button>
+              <td class="px-2 sm:px-4 py-3">
+                <div class="flex flex-col sm:flex-row gap-1 sm:gap-2">
+                  <button
+                    class="text-xs sm:text-sm text-blue-600 hover:text-blue-800 whitespace-nowrap px-1 sm:px-2 py-1"
+                    (click)="edit.emit(row)"
+                  >
+                    Duzenle
+                  </button>
+                  <button
+                    class="text-xs sm:text-sm text-red-600 hover:text-red-800 whitespace-nowrap px-1 sm:px-2 py-1"
+                    (click)="delete.emit(row)"
+                  >
+                    Sil
+                  </button>
+                </div>
               </td>
             </tr>
           } @empty {

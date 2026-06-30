@@ -1,11 +1,29 @@
 <nav class="bg-blue-600 text-white shadow-md">
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a routerLink="/" class="text-xl font-bold">Kitaplik</a>
-    <div class="flex gap-4">
+    <button
+      class="sm:hidden p-2"
+      (click)="menuOpen.set(!menuOpen())"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        @if (menuOpen()) {
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        } @else {
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        }
+      </svg>
+    </button>
+    <div class="hidden sm:flex gap-4">
       <a routerLink="/kitaplar" class="hover:text-blue-200">Kitaplar</a>
       <a routerLink="/kitaplar/ekle" class="hover:text-blue-200">Yeni Kitap</a>
     </div>
   </div>
+  @if (menuOpen()) {
+    <div class="sm:hidden border-t border-blue-500 px-4 py-2 flex flex-col gap-2">
+      <a routerLink="/kitaplar" class="block py-1 hover:text-blue-200" (click)="menuOpen.set(false)">Kitaplar</a>
+      <a routerLink="/kitaplar/ekle" class="block py-1 hover:text-blue-200" (click)="menuOpen.set(false)">Yeni Kitap</a>
+    </div>
+  }
 </nav>
 
 <main class="max-w-6xl mx-auto">

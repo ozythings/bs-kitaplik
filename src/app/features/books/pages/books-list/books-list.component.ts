@@ -30,12 +30,12 @@ import { LoadingSpinnerComponent } from '../../../../shared/components/loading-s
         </a>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-3 mb-4">
+      <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3 mb-4">
         <input
           [value]="searchText()"
           (input)="searchText.set($any($event.target).value)"
           placeholder="Kitap adi veya yazar ara..."
-          class="flex-1 border rounded-lg px-3 py-2"
+          class="col-span-2 sm:flex-1 border rounded-lg px-3 py-2"
         />
         <select
           [value]="filterTur()"
@@ -60,7 +60,7 @@ import { LoadingSpinnerComponent } from '../../../../shared/components/loading-s
         <select
           [value]="sortField()"
           (change)="sortField.set($any($event.target).value)"
-          class="border rounded-lg px-3 py-2"
+          class="col-span-2 sm:col-span-1 border rounded-lg px-3 py-2"
         >
           <option value="eklenmeTarihi">Eklenme Tarihi</option>
           <option value="puan">Puana Gore</option>
