@@ -1,1 +1,13 @@
-<router-outlet />
+<nav class="bg-blue-600 text-white shadow-md">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a routerLink="/" class="text-xl font-bold">Kitaplik</a>
+    <div class="flex gap-4">
+      <a routerLink="/kitaplar" class="hover:text-blue-200">Kitaplar</a>
+      <a routerLink="/kitaplar/ekle" class="hover:text-blue-200">Yeni Kitap</a>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-6xl mx-auto">
+  <router-outlet />
+</main>
