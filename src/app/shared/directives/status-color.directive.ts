@@ -15,12 +15,20 @@ export class StatusColorDirective {
 
   private el = inject(ElementRef);
 
+
   constructor() {
     effect(() => {
       const status = this.statusColor();
       const classes = this.colors[status];
+      let previousClasses: string[] = []
+
+      if (previousClasses.length) {
+        this.el.nativeElement.classList.remove(...previousClasses);
+      }
+
       if (classes) {
         this.el.nativeElement.classList.add(...classes);
+        previousClasses = classes;
       }
     });
   }
