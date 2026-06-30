@@ -1,59 +1,67 @@
 # BsKitaplik
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.4.
+Angular tabanlı kişisel kütüphane uygulaması. Kullanıcı okuduğu, okuyacağı ve okumakta olduğu kitapları takip edebilir; ekleme, düzenleme, silme işlemleri yapabilir; tür ve duruma göre filtreleyip arama yapabilir.
 
-## Development server
-
-To start a local development server, run:
+## Kurulum
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Tarayıcıda `http://localhost:4200` adresini açın.
 
-## Code scaffolding
+## Mimari
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Özellik bazlı (feature-based) mimari kullanılmıştır.
 
-```bash
-ng generate component component-name
+```
+src/app/
+├── core/          StorageService, UnsavedChangesGuard, modeller
+├── shared/        DataTable, ConfirmDialog, FormField, EmptyState, LoadingSpinner, pipe, directive, validator
+├── features/books Kitaplar özelliği (liste sayfası, form sayfası, servis, model, route)
+├── app.ts         Ana uygulama bileşeni
+├── app.config.ts  Uygulama yapılandırması
+└── app.routes.ts  Ana yönlendirme
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Teknolojiler
 
-```bash
-ng generate --help
-```
+- **Angular 22** — standalone component, Signals API, Reactive Forms
+- **RxJS** — BehaviorSubject ile servis katmanı
+- **Tailwind CSS** — responsive arayüz
+- **localStorage** — veri saklama (yalnızca StorageService üzerinden)
+- **Lazy Loading** — feature sayfaları loadComponent/loadChildren ile yüklenir
 
-## Building
+## Özellikler
 
-To build the project run:
+- **CRUD** — Kitap ekleme, listeleme, düzenleme, silme
+- **Arama** — Kitap adı veya yazara göre anlık arama
+- **Filtreleme** — Tür ve okuma durumuna göre filtreleme
+- **Sıralama** — Eklenme tarihi, puan veya ada göre sıralama
+- **Okuma Durumu** — Okunacak / Okunuyor / Okundu
+- **Puanlama** — 1-5 arası puan
+- **Onay Penceresi** — Silme işleminde ConfirmDialog
+- **Responsive** — Mobil ve masaüstü uyumlu
 
-```bash
-ng build
-```
+## Özel Yapı Taşları
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Custom Pipe: `StatusTextPipe`
+- **Dosya:** `src/app/shared/pipes/status-text.pipe.ts`
+- **Kullanım:** `{{ kitap.durum | statusText }}` — `'okundu'` değerini `'Okundu'` olarak gösterir
+- **Kullanıldığı yer:** DataTable bileşeni (badge kolon tipi)
 
-## Running unit tests
+### Custom Directive: `StatusColorDirective`
+- **Dosya:** `src/app/shared/directives/status-color.directive.ts`
+- **Kullanım:** `<span statusColor="okundu">` — duruma göre kırmızı/sarı/yeşil rozet rengi ekler
+- **Kullanıldığı yer:** DataTable bileşeni (badge kolon tipi)
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Custom Validator: `scoreValidator`
+- **Dosya:** `src/app/shared/validators/score-validator.ts`
+- **Kullanım:** `puan: new FormControl(null, [scoreValidator()])` — 1-5 arası tam sayı kontrolü
+- **Kullanıldığı yer:** BooksForm sayfası
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Route Guard: `UnsavedChangesGuard`
+- **Dosya:** `src/app/core/guards/unsaved-changes.guard.ts`
+- **Kullanım:** Form sayfasından kaydetmeden çıkarken uyarı gösterir
+- **Kullanıldığı yer:** `/kitaplar/ekle` ve `/kitaplar/:id/duzenle` rotaları
