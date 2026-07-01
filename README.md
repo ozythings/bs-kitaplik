@@ -1,6 +1,6 @@
-# BsKitaplik
+# Kitaplik ve Okuma Listesi
 
-Angular tabanlı kişisel kütüphane uygulaması. Kullanıcı okuduğu, okuyacağı ve okumakta olduğu kitapları takip edebilir; ekleme, düzenleme, silme işlemleri yapabilir; tür ve duruma göre filtreleyip arama yapabilir.
+Angular + localStorage tabanlı kişisel kütüphane uygulaması. Kullanıcı okuduğu, okuyacağı ve okumakta olduğu kitapları takip edebilir; ekleme, düzenleme, silme işlemleri yapabilir; tür ve duruma göre filtreleyip arama yapabilir.
 
 ## Kurulum
 
@@ -11,57 +11,82 @@ ng serve
 
 Tarayıcıda `http://localhost:4200` adresini açın.
 
+## Proje Amacı
+
+Kullanıcının okuduğu, okuyacağı ve okumakta olduğu kitapları takip edebileceği bir kişisel kütüphane uygulamasıdır. CRUD işlemleri (Ekleme, Listeleme, Düzenleme, Silme) eksiksiz olarak çalışır. Veriler tarayıcının localStorage alanında saklanır.
+
+## Veri Modeli
+
+`src/app/features/books/models/book.model.ts`
+
+| Alan          | Tip                                |
+|---------------|------------------------------------|
+| id            | number                             |
+| ad            | string                             |
+| yazar         | string                             |
+| tur           | string                             |
+| durum         | 'okunacak' / 'okunuyor' / 'okundu' |
+| sayfaSayisi   | number                             |
+| puan          | number (1-5)                       |
+| not           | string                             |
+| eklenmeTarihi | string (ISO)                       |
+
+## Sayfalar ve Rotalar
+
+- **Kitap Listesi** — `/kitaplar` — Tüm kitapların listelendiği, filtre, arama ve sıralamanın bulunduğu ekran.
+- **Kitap Ekleme** — `/kitaplar/ekle` — Yeni kitap eklemek için reactive form sayfası.
+- **Kitap Düzenleme** — `/kitaplar/:id/duzenle` — Mevcut kitabı güncellemek için reactive form sayfası.
+
 ## Mimari
 
-Özellik bazlı (feature-based) mimari kullanılmıştır.
+Proje feature-based mimari ile kurgulanmıştır. localStorage erişimi yalnızca `core/services/storage.service.ts` üzerinden yapılır.
 
 ```
 src/app/
-├── core/          StorageService, UnsavedChangesGuard, modeller
-├── shared/        DataTable, ConfirmDialog, FormField, EmptyState, LoadingSpinner, pipe, directive, validator
-├── features/books Kitaplar özelliği (liste sayfası, form sayfası, servis, model, route)
-├── app.ts         Ana uygulama bileşeni
-├── app.config.ts  Uygulama yapılandırması
-└── app.routes.ts  Ana yönlendirme
+  core/
+    services/storage.service.ts
+    guards/unsaved-changes.guard.ts
+    models/
+  shared/
+    components/
+      data-table/
+      confirm-dialog/
+      form-field/
+      empty-state/
+      loading-spinner/
+    pipes/status-text.pipe.ts
+    directives/status-color.directive.ts
+    validators/score-validator.ts
+  features/books/
+    pages/
+      books-list/
+      books-form/
+    services/books.service.ts
+    models/book.model.ts
+    books.routes.ts
+  app.ts
+  app.config.ts
+  app.routes.ts
 ```
 
 ## Teknolojiler
 
-- **Angular 22** — standalone component, Signals API, Reactive Forms
+- **Angular 22** — Standalone component, Signals API, Reactive Forms
 - **RxJS** — BehaviorSubject ile servis katmanı
-- **Tailwind CSS** — responsive arayüz
-- **localStorage** — veri saklama (yalnızca StorageService üzerinden)
-- **Lazy Loading** — feature sayfaları loadComponent/loadChildren ile yüklenir
+- **Tailwind CSS** — Responsive arayüz
+- **localStorage** — Veri saklama (yalnızca StorageService üzerinden)
+- **Lazy Loading** — Feature sayfaları loadComponent/loadChildren ile yüklenir
 
-## Özellikler
+## Custom Elements
 
-- **CRUD** — Kitap ekleme, listeleme, düzenleme, silme
-- **Arama** — Kitap adı veya yazara göre anlık arama
-- **Filtreleme** — Tür ve okuma durumuna göre filtreleme
-- **Sıralama** — Eklenme tarihi, puan veya ada göre sıralama
-- **Okuma Durumu** — Okunacak / Okunuyor / Okundu
-- **Puanlama** — 1-5 arası puan
-- **Onay Penceresi** — Silme işleminde ConfirmDialog
-- **Responsive** — Mobil ve masaüstü uyumlu
+### StatusTextPipe
+`src/app/shared/pipes/status-text.pipe.ts` — 'okundu' değerini 'Okundu' olarak gösterir. DataTable badge column tipinde kullanılır.
 
-## Özel Yapı Taşları
+### StatusColorDirective
+`src/app/shared/directives/status-color.directive.ts` — Duruma göre kırmızı/sarı/yeşil rozet rengi ekler. DataTable badge column tipinde kullanılır.
 
-### Custom Pipe: `StatusTextPipe`
-- **Dosya:** `src/app/shared/pipes/status-text.pipe.ts`
-- **Kullanım:** `{{ kitap.durum | statusText }}` — `'okundu'` değerini `'Okundu'` olarak gösterir
-- **Kullanıldığı yer:** DataTable bileşeni (badge kolon tipi)
+### scoreValidator
+`src/app/shared/validators/score-validator.ts` — Puan alanının 1-5 arası tam sayı olduğunu kontrol eder. BooksForm sayfasında kullanılır.
 
-### Custom Directive: `StatusColorDirective`
-- **Dosya:** `src/app/shared/directives/status-color.directive.ts`
-- **Kullanım:** `<span statusColor="okundu">` — duruma göre kırmızı/sarı/yeşil rozet rengi ekler
-- **Kullanıldığı yer:** DataTable bileşeni (badge kolon tipi)
-
-### Custom Validator: `scoreValidator`
-- **Dosya:** `src/app/shared/validators/score-validator.ts`
-- **Kullanım:** `puan: new FormControl(null, [scoreValidator()])` — 1-5 arası tam sayı kontrolü
-- **Kullanıldığı yer:** BooksForm sayfası
-
-### Route Guard: `UnsavedChangesGuard`
-- **Dosya:** `src/app/core/guards/unsaved-changes.guard.ts`
-- **Kullanım:** Form sayfasından kaydetmeden çıkarken uyarı gösterir
-- **Kullanıldığı yer:** `/kitaplar/ekle` ve `/kitaplar/:id/duzenle` rotaları
+### UnsavedChangesGuard
+`src/app/core/guards/unsaved-changes.guard.ts` — Form sayfasından kaydetmeden çıkarken uyarı gösterir. `/kitaplar/ekle` ve `/kitaplar/:id/duzenle` rotalarında kullanılır.
