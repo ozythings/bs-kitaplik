@@ -16,6 +16,7 @@ export class DataTableComponent {
 
   readonly edit = output<any>();
   readonly delete = output<any>();
+  readonly sortChange = output<{ key: string; dir: 'asc' | 'desc' }>();
 
   protected readonly sortKey = signal<string>('');
   protected readonly sortDir = signal<'asc' | 'desc'>('asc');
@@ -27,5 +28,6 @@ export class DataTableComponent {
       this.sortKey.set(key);
       this.sortDir.set('asc');
     }
+    this.sortChange.emit({ key, dir: this.sortDir() });
   }
 }

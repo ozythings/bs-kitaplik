@@ -29,6 +29,7 @@ export class BooksListComponent {
   protected readonly filterTur = signal('');
   protected readonly filterDurum = signal('');
   protected readonly sortField = signal<string>('eklenmeTarihi');
+  protected readonly sortDir = signal<'asc' | 'desc'>('desc');
 
   protected readonly deleteDialogVisible = signal(false);
   protected selectedBook: Book | null = null;
@@ -69,14 +70,22 @@ export class BooksListComponent {
     }
 
     const field = this.sortField();
+    const dir = this.sortDir();
     books = [...books].sort((a, b) => {
       if (field === 'puan') {
-        return (b.puan || 0) - (a.puan || 0);
+        if (a.puan == null && b.puan == null) return 0;
+        if (a.puan == null) return 1;
+        if (b.puan == null) return -1;
+        return dir === 'desc' ? b.puan - a.puan : a.puan - b.puan;
       }
       if (field === 'ad') {
-        return a.ad.localeCompare(b.ad);
+        return dir === 'asc'
+          ? a.ad.localeCompare(b.ad)
+          : b.ad.localeCompare(a.ad);
       }
-      return new Date(b.eklenmeTarihi).getTime() - new Date(a.eklenmeTarihi).getTime();
+      const dateA = new Date(a.eklenmeTarihi).getTime();
+      const dateB = new Date(b.eklenmeTarihi).getTime();
+      return dir === 'desc' ? dateB - dateA : dateA - dateB;
     });
 
     return books;
@@ -84,16 +93,26 @@ export class BooksListComponent {
 
   protected readonly columns: TableColumn[] = [
     { key: 'ad', label: 'Kitap Adi', sortable: true },
-    { key: 'yazar', label: 'Yazar', sortable: true },
+    { key: 'yazar', label: 'Yazar' },
     { key: 'tur', label: 'Tur' },
     { key: 'durum', label: 'Durum', type: 'badge' },
     { key: 'sayfaSayisi', label: 'Sayfa' },
-    { key: 'puan', label: 'Puan', type: 'stars' },
-    { key: 'eklenmeTarihi', label: 'Eklenme', type: 'date' },
+    { key: 'puan', label: 'Puan', type: 'stars', sortable: true },
+    { key: 'eklenmeTarihi', label: 'Eklenme', type: 'date', sortable: true },
   ];
 
   constructor() {
     setTimeout(() => this.loading.set(false), 300);
+  }
+
+  protected onSortFieldChange(field: string): void {
+    this.sortField.set(field);
+    this.sortDir.set(field === 'ad' ? 'asc' : 'desc');
+  }
+
+  protected onColumnSort(event: { key: string; dir: 'asc' | 'desc' }): void {
+    this.sortField.set(event.key);
+    this.sortDir.set(event.dir);
   }
 
   protected onEdit(book: Book): void {

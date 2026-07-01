@@ -9,7 +9,7 @@
           >
             {{ col.label }}
             @if (col.sortable && sortKey() === col.key) {
-              <span class="ml-1 text-xs">{{ sortDir() === 'asc' ? '(A-Z)' : '(Z-A)' }}</span>
+              <span class="ml-1">{{ sortDir() === 'asc' ? '\u2191' : '\u2193' }}</span>
             }
           </th>
         }
