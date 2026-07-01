@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { UnsavedChangesGuard } from '../../core/guards/unsaved-changes.guard';
+import { UnsavedChangesGuard } from '@core/guards/unsaved-changes.guard';
 
 export const booksRoutes: Routes = [
   {

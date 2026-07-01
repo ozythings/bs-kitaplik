@@ -2,7 +2,7 @@ import { Injectable, Signal, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Book } from '../models/book.model';
-import { StorageService } from '../../../core/services/storage.service';
+import { StorageService } from '@core/services/storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class BooksService {
@@ -19,11 +19,11 @@ export class BooksService {
   }
 
   getBookById(id: number): Book | undefined {
-    return this.booksSubject.getValue().find(b => b.id === id);
+    return this.booksSubject.value.find(b => b.id === id);
   }
 
   addBook(book: Omit<Book, 'id' | 'eklenmeTarihi'>): void {
-    const books = this.booksSubject.getValue();
+    const books = this.booksSubject.value;
     const newBook: Book = {
       ...book,
       id: Date.now(),
@@ -34,7 +34,7 @@ export class BooksService {
   }
 
   updateBook(id: number, changes: Partial<Book>): void {
-    const books = this.booksSubject.getValue();
+    const books = this.booksSubject.value;
     const index = books.findIndex(b => b.id === id);
     if (index !== -1) {
       books[index] = { ...books[index], ...changes };
@@ -43,7 +43,7 @@ export class BooksService {
   }
 
   deleteBook(id: number): void {
-    const books = this.booksSubject.getValue().filter(b => b.id !== id);
+    const books = this.booksSubject.value.filter(b => b.id !== id);
     this.save(books);
   }
 
