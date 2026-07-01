@@ -10,61 +10,7 @@ import { CanComponentDeactivate } from '@core/guards/unsaved-changes.guard';
   selector: 'app-books-form',
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink, FormFieldComponent],
-  template: `
-    <div class="max-w-lg mx-auto p-4">
-      <h1 class="text-2xl font-bold mb-6">{{ isEdit() ? 'Kitap Duzenle' : 'Kitap Ekle' }}</h1>
-
-      <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="space-y-4">
-        <app-form-field label="Kitap Adi" [required]="true" [control]="bookForm.get('ad')">
-          <input formControlName="ad" class="w-full border rounded-lg px-3 py-2" />
-        </app-form-field>
-
-        <app-form-field label="Yazar" [required]="true" [control]="bookForm.get('yazar')">
-          <input formControlName="yazar" class="w-full border rounded-lg px-3 py-2" />
-        </app-form-field>
-
-        <app-form-field label="Tur" [control]="bookForm.get('tur')">
-          <input formControlName="tur" class="w-full border rounded-lg px-3 py-2" />
-        </app-form-field>
-
-        <app-form-field label="Durum" [control]="bookForm.get('durum')">
-          <select formControlName="durum" class="w-full border rounded-lg px-3 py-2">
-            <option value="okunacak">Okunacak</option>
-            <option value="okunuyor">Okunuyor</option>
-            <option value="okundu">Okundu</option>
-          </select>
-        </app-form-field>
-
-        <app-form-field label="Sayfa Sayisi" [control]="bookForm.get('sayfaSayisi')">
-          <input type="number" formControlName="sayfaSayisi" class="w-full border rounded-lg px-3 py-2" />
-        </app-form-field>
-
-        <app-form-field label="Puan (1-5)" [control]="bookForm.get('puan')">
-          <input type="number" formControlName="puan" class="w-full border rounded-lg px-3 py-2" />
-        </app-form-field>
-
-        <app-form-field label="Not" [control]="bookForm.get('not')">
-          <textarea formControlName="not" class="w-full border rounded-lg px-3 py-2" rows="3"></textarea>
-        </app-form-field>
-
-        <div class="flex gap-3 pt-4">
-          <button
-            type="submit"
-            [disabled]="bookForm.invalid"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-          >
-            {{ isEdit() ? 'Guncelle' : 'Ekle' }}
-          </button>
-          <a
-            routerLink="/kitaplar"
-            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-          >
-            Iptal
-          </a>
-        </div>
-      </form>
-    </div>
-  `,
+  templateUrl: "./books-form.component.html",
 })
 export class BooksFormComponent implements CanComponentDeactivate {
   private booksService = inject(BooksService);

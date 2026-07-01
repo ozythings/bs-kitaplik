@@ -1,0 +1,71 @@
+<div class="p-4">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <h1 class="text-2xl font-bold">Kitaplar</h1>
+    <a
+      routerLink="/kitaplar/ekle"
+      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-center"
+    >
+      Yeni Kitap Ekle
+    </a>
+  </div>
+
+  <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3 mb-4">
+    <input
+      [value]="searchText()"
+      (input)="searchText.set($any($event.target).value)"
+      placeholder="Kitap adi veya yazar ara..."
+      class="col-span-2 sm:flex-1 border rounded-lg px-3 py-2"
+    />
+    <select
+      [value]="filterTur()"
+      (change)="filterTur.set($any($event.target).value)"
+      class="border rounded-lg px-3 py-2"
+    >
+      <option value="">Tum Turler</option>
+      @for (tur of turList(); track tur) {
+        <option [value]="tur">{{ tur }}</option>
+      }
+    </select>
+    <select
+      [value]="filterDurum()"
+      (change)="filterDurum.set($any($event.target).value)"
+      class="border rounded-lg px-3 py-2"
+    >
+      <option value="">Tum Durumlar</option>
+      <option value="okunacak">Okunacak</option>
+      <option value="okunuyor">Okunuyor</option>
+      <option value="okundu">Okundu</option>
+    </select>
+    <select
+      [value]="sortField()"
+      (change)="sortField.set($any($event.target).value)"
+      class="col-span-2 sm:col-span-1 border rounded-lg px-3 py-2"
+    >
+      <option value="eklenmeTarihi">Eklenme Tarihi</option>
+      <option value="puan">Puana Gore</option>
+      <option value="ad">Ada Gore</option>
+    </select>
+  </div>
+
+  <app-loading-spinner [loading]="loading()" label="Kitaplar yukleniyor..." />
+
+  @if (!loading() && filteredBooks().length === 0) {
+    <app-empty-state />
+  }
+
+  @if (filteredBooks().length > 0) {
+    <app-data-table
+      [columns]="columns"
+      [data]="filteredBooks()"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+    />
+  }
+</div>
+
+<app-confirm-dialog
+  [visible]="deleteDialogVisible()"
+  [data]="deleteDialogData"
+  (confirm)="confirmDelete()"
+  (cancel)="deleteDialogVisible.set(false)"
+/>
