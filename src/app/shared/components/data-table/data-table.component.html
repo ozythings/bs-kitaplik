@@ -29,7 +29,11 @@
                   {{ row[col.key] | statusText }}
                 </span>
               } @else if (col.type === 'stars') {
-                {{ row[col.key] || 0 }} / 5
+
+                @if (row[col.key] != null) {
+                  {{ row[col.key] }} / 5
+                }
+
               } @else if (col.type === 'date') {
                 {{ row[col.key] | date:'dd.MM.yyyy' }}
               } @else {
