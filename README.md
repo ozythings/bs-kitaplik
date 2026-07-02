@@ -37,6 +37,17 @@ Kullanıcının okuduğu, okuyacağı ve okumakta olduğu kitapları takip edebi
 - **Kitap Ekleme** — `/kitaplar/ekle` — Yeni kitap eklemek için reactive form sayfası.
 - **Kitap Düzenleme** — `/kitaplar/:id/duzenle` — Mevcut kitabı güncellemek için reactive form sayfası.
 
+## Ekran Görüntüleri
+
+### Kitap Listesi
+![Kitap Listesi](screenshots/books.png)
+
+### Kitap Ekleme
+![Kitap Ekleme](screenshots/add_book.png)
+
+### Mobil Görünüm
+![Mobil Görünüm](screenshots/responsive.png)
+
 ## Mimari
 
 Proje feature-based mimari ile kurgulanmıştır. localStorage erişimi yalnızca `core/services/storage.service.ts` üzerinden yapılır.
@@ -44,9 +55,15 @@ Proje feature-based mimari ile kurgulanmıştır. localStorage erişimi yalnızc
 ```
 src/app/
   core/
-    services/storage.service.ts
-    guards/unsaved-changes.guard.ts
+    services/
+      storage.service.ts
+      notification.service.ts
+    guards/
+      unsaved-changes.guard.ts
     models/
+      table-column.model.ts
+      confirm-dialog-data.model.ts
+      notification.model.ts
   shared/
     components/
       data-table/
@@ -54,17 +71,24 @@ src/app/
       form-field/
       empty-state/
       loading-spinner/
-    pipes/status-text.pipe.ts
-    directives/status-color.directive.ts
-    validators/score-validator.ts
+      toast/
+    pipes/
+      status-text.pipe.ts
+    directives/
+      status-color.directive.ts
+    validators/
+      score-validator.ts
   features/books/
     pages/
       books-list/
       books-form/
-    services/books.service.ts
-    models/book.model.ts
+    services/
+      books.service.ts
+    models/
+      book.model.ts
     books.routes.ts
   app.ts
+  app.html
   app.config.ts
   app.routes.ts
 ```
