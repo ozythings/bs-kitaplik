@@ -44,6 +44,10 @@
       <option value="eklenmeTarihi">Eklenme Tarihi</option>
       <option value="puan">Puana Gore</option>
       <option value="ad">Ada Gore</option>
+      <option value="yazar">Yazara Gore</option>
+      <option value="tur">Ture Gore</option>
+      <option value="durum">Duruma Gore</option>
+      <option value="sayfaSayisi">Sayfaya Gore</option>
     </select>
   </div>
 
@@ -57,6 +61,7 @@
     <app-data-table
       [columns]="columns"
       [data]="filteredBooks()"
+      [pageSize]="10"
       (edit)="onEdit($event)"
       (delete)="onDelete($event)"
       (sortChange)="onColumnSort($event)"
