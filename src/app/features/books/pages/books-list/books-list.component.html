@@ -13,7 +13,7 @@
     <input
       [value]="searchText()"
       (input)="searchText.set($any($event.target).value)"
-      placeholder="Kitap adi veya yazar ara..."
+      placeholder="Kitap adı veya yazar ara..."
       class="col-span-2 sm:flex-1 border rounded-lg px-3 py-2"
     />
     <select
@@ -21,7 +21,7 @@
       (change)="filterTur.set($any($event.target).value)"
       class="border rounded-lg px-3 py-2"
     >
-      <option value="">Tum Turler</option>
+      <option value="">Tüm Türler</option>
       @for (tur of turList(); track tur) {
         <option [value]="tur">{{ tur }}</option>
       }
@@ -31,7 +31,7 @@
       (change)="filterDurum.set($any($event.target).value)"
       class="border rounded-lg px-3 py-2"
     >
-      <option value="">Tum Durumlar</option>
+      <option value="">Tüm Durumlar</option>
       <option value="okunacak">Okunacak</option>
       <option value="okunuyor">Okunuyor</option>
       <option value="okundu">Okundu</option>
@@ -42,16 +42,16 @@
       class="col-span-2 sm:col-span-1 border rounded-lg px-3 py-2"
     >
       <option value="eklenmeTarihi">Eklenme Tarihi</option>
-      <option value="puan">Puana Gore</option>
-      <option value="ad">Ada Gore</option>
-      <option value="yazar">Yazara Gore</option>
-      <option value="tur">Ture Gore</option>
-      <option value="durum">Duruma Gore</option>
-      <option value="sayfaSayisi">Sayfaya Gore</option>
+      <option value="puan">Puana Göre</option>
+      <option value="ad">Ada Göre</option>
+      <option value="yazar">Yazara Göre</option>
+      <option value="tur">Türe Göre</option>
+      <option value="durum">Duruma Göre</option>
+      <option value="sayfaSayisi">Sayfaya Göre</option>
     </select>
   </div>
 
-  <app-loading-spinner [loading]="loading()" label="Kitaplar yukleniyor..." />
+  <app-loading-spinner [loading]="loading()" label="Kitaplar yükleniyor..." />
 
   @if (!loading() && filteredBooks().length === 0) {
     <app-empty-state />

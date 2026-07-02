@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: "./empty-state.component.html",
 })
 export class EmptyStateComponent {
-  readonly message = input<string>('Henuz kayit yok');
+  readonly message = input<string>('Henüz kayıt yok');
   readonly link = input<string>('/kitaplar/ekle');
   readonly buttonLabel = input<string>('Kitap Ekle');
 }

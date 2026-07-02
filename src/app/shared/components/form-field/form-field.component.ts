@@ -16,6 +16,6 @@ export class FormFieldComponent {
     if (!errors) return '';
     if (errors['required']) return 'Bu alan zorunludur';
     if (errors['scoreInvalid']) return errors['scoreInvalid'];
-    return 'Gecersiz deger';
+    return 'Geçersiz değer';
   }
 }

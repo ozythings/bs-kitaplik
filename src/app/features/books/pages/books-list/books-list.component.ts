@@ -35,10 +35,10 @@ export class BooksListComponent {
   protected selectedBook: Book | null = null;
 
   protected readonly deleteDialogData = {
-    title: 'Kitabi Sil',
-    message: 'Bu kitabi silmek istediginize emin misiniz?',
+    title: 'Kitabı Sil',
+    message: 'Bu kitabı silmek istediğinize emin misiniz?',
     confirmLabel: 'Sil',
-    cancelLabel: 'Iptal',
+    cancelLabel: 'İptal',
   };
 
   protected readonly turList = computed<string[]>(() => {
@@ -100,9 +100,9 @@ export class BooksListComponent {
   });
 
   protected readonly columns: TableColumn[] = [
-    { key: 'ad', label: 'Kitap Adi', sortable: true },
+    { key: 'ad', label: 'Kitap Adı', sortable: true },
     { key: 'yazar', label: 'Yazar', sortable: true },
-    { key: 'tur', label: 'Tur', sortable: true },
+    { key: 'tur', label: 'Tür', sortable: true },
     { key: 'durum', label: 'Durum', type: 'badge', sortable: true },
     { key: 'sayfaSayisi', label: 'Sayfa', sortable: true },
     { key: 'puan', label: 'Puan', type: 'stars', sortable: true },
