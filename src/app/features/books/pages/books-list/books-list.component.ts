@@ -72,20 +72,28 @@ export class BooksListComponent {
     const field = this.sortField();
     const dir = this.sortDir();
     books = [...books].sort((a, b) => {
-      if (field === 'puan') {
-        if (a.puan == null && b.puan == null) return 0;
-        if (a.puan == null) return 1;
-        if (b.puan == null) return -1;
-        return dir === 'desc' ? b.puan - a.puan : a.puan - b.puan;
+      const aVal = a[field as keyof Book];
+      const bVal = b[field as keyof Book];
+
+      if (aVal == null && bVal == null) return 0;
+      if (aVal == null) return 1;
+      if (bVal == null) return -1;
+
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return dir === 'desc' ? bVal - aVal : aVal - bVal;
       }
-      if (field === 'ad') {
-        return dir === 'asc'
-          ? a.ad.localeCompare(b.ad)
-          : b.ad.localeCompare(a.ad);
+
+      if (field === 'eklenmeTarihi') {
+        const dateA = new Date(aVal as string).getTime();
+        const dateB = new Date(bVal as string).getTime();
+        return dir === 'desc' ? dateB - dateA : dateA - dateB;
       }
-      const dateA = new Date(a.eklenmeTarihi).getTime();
-      const dateB = new Date(b.eklenmeTarihi).getTime();
-      return dir === 'desc' ? dateB - dateA : dateA - dateB;
+
+      const strA = String(aVal);
+      const strB = String(bVal);
+      return dir === 'asc'
+        ? strA.localeCompare(strB)
+        : strB.localeCompare(strA);
     });
 
     return books;
@@ -93,10 +101,10 @@ export class BooksListComponent {
 
   protected readonly columns: TableColumn[] = [
     { key: 'ad', label: 'Kitap Adi', sortable: true },
-    { key: 'yazar', label: 'Yazar' },
-    { key: 'tur', label: 'Tur' },
-    { key: 'durum', label: 'Durum', type: 'badge' },
-    { key: 'sayfaSayisi', label: 'Sayfa' },
+    { key: 'yazar', label: 'Yazar', sortable: true },
+    { key: 'tur', label: 'Tur', sortable: true },
+    { key: 'durum', label: 'Durum', type: 'badge', sortable: true },
+    { key: 'sayfaSayisi', label: 'Sayfa', sortable: true },
     { key: 'puan', label: 'Puan', type: 'stars', sortable: true },
     { key: 'eklenmeTarihi', label: 'Eklenme', type: 'date', sortable: true },
   ];
@@ -107,7 +115,8 @@ export class BooksListComponent {
 
   protected onSortFieldChange(field: string): void {
     this.sortField.set(field);
-    this.sortDir.set(field === 'ad' ? 'asc' : 'desc');
+    const stringFields = ['ad', 'yazar', 'tur', 'durum'];
+    this.sortDir.set(stringFields.includes(field) ? 'asc' : 'desc');
   }
 
   protected onColumnSort(event: { key: string; dir: 'asc' | 'desc' }): void {
