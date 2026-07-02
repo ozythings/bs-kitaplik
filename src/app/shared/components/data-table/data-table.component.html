@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
-      @for (row of data(); track row.id) {
+      @for (row of displayData(); track row.id) {
         <tr class="hover:bg-gray-50">
           @for (col of columns(); track col.key) {
             <td class="px-4 py-3">
@@ -67,5 +67,23 @@
       }
     </tbody>
   </table>
+
+  @if (pageSize() > 0 && totalPages() > 1) {
+    <div class="flex items-center justify-between px-4 py-3 border-t">
+      <button
+        class="px-3 py-1 text-sm rounded border hover:bg-gray-50 disabled:opacity-50"
+        [disabled]="pageIndex() === 1"
+        (click)="prevPage()"
+      >« Önceki</button>
+
+      <span class="text-sm text-gray-600">Sayfa {{ pageIndex() }} / {{ totalPages() }}</span>
+
+      <button
+        class="px-3 py-1 text-sm rounded border hover:bg-gray-50 disabled:opacity-50"
+        [disabled]="pageIndex() === totalPages()"
+        (click)="nextPage()"
+      >Sonraki »</button>
+    </div>
+  }
 </div>
 
