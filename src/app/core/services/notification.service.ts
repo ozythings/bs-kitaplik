@@ -9,6 +9,6 @@ export class NotificationService {
 
   show(message: string, type: Notification['type'] = 'info'): void {
     this.notification.set({ message, type });
-    setTimeout(() => this.notification.set(null), 1500);
+    setTimeout(() => this.notification.set(null), 2250);
   }
 }

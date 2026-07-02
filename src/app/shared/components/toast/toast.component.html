@@ -1,6 +1,6 @@
 @if (notification(); as n) {
   <div
-    class="fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm transition-all duration-300"
+    class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm transition-all duration-300"
     [class.bg-green-600]="n.type === 'success'"
     [class.bg-red-600]="n.type === 'error'"
     [class.bg-blue-600]="n.type === 'info'"
