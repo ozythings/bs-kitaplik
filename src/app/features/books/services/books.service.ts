@@ -1,8 +1,9 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, inject, Signal, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Book } from '../models/book.model';
 import { StorageService } from '@core/services/storage.service';
+import { NotificationService } from '@core/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class BooksService {
@@ -11,7 +12,10 @@ export class BooksService {
   readonly books$: Observable<Book[]> = this.booksSubject.asObservable();
   readonly books: Signal<Book[]> = toSignal(this.books$, { initialValue: [] });
 
-  constructor(private storage: StorageService) {
+  private storage = inject(StorageService);
+  private notification = inject(NotificationService);
+
+  constructor() {
     const saved = this.storage.get<Book[]>(this.STORAGE_KEY);
     if (saved) {
       this.booksSubject.next(saved);
@@ -31,6 +35,7 @@ export class BooksService {
     };
     books.push(newBook);
     this.save(books);
+    this.notification.show('Kitap eklendi', 'success');
   }
 
   updateBook(id: number, changes: Partial<Book>): void {
@@ -39,12 +44,14 @@ export class BooksService {
     if (index !== -1) {
       books[index] = { ...books[index], ...changes };
       this.save(books);
+      this.notification.show('Kitap güncellendi', 'success');
     }
   }
 
   deleteBook(id: number): void {
     const books = this.booksSubject.value.filter(b => b.id !== id);
     this.save(books);
+    this.notification.show('Kitap silindi', 'success');
   }
 
   private save(books: Book[]): void {
