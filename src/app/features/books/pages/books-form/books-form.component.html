@@ -2,15 +2,15 @@
   <h1 class="text-2xl font-bold mb-6">{{ isEdit() ? 'Kitap Düzenle' : 'Kitap Ekle' }}</h1>
 
   <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <app-form-field label="Kitap Adı" [required]="true" [control]="bookForm.get('ad')">
+    <app-form-field label="Kitap Adı (2-100 karakter arası)" [required]="true" [control]="bookForm.get('ad')">
       <input formControlName="ad" class="w-full border rounded-lg px-3 py-2" />
     </app-form-field>
 
-    <app-form-field label="Yazar" [required]="true" [control]="bookForm.get('yazar')">
+    <app-form-field label="Yazar (2-100 karakter arası)" [required]="true" [control]="bookForm.get('yazar')">
       <input formControlName="yazar" class="w-full border rounded-lg px-3 py-2" />
     </app-form-field>
 
-    <app-form-field label="Tür" [control]="bookForm.get('tur')">
+    <app-form-field label="Tür (en fazla 50 karakter)" [control]="bookForm.get('tur')">
       <input formControlName="tur" class="w-full border rounded-lg px-3 py-2" />
     </app-form-field>
 
@@ -26,19 +26,18 @@
       <input type="number" formControlName="sayfaSayisi" class="w-full border rounded-lg px-3 py-2" />
     </app-form-field>
 
-    <app-form-field label="Puan (1-5)" [control]="bookForm.get('puan')">
+    <app-form-field label="Puan (1-5 arası)" [control]="bookForm.get('puan')">
       <input type="number" formControlName="puan" class="w-full border rounded-lg px-3 py-2" />
     </app-form-field>
 
-    <app-form-field label="Not" [control]="bookForm.get('not')">
+    <app-form-field label="Not (en fazla 200 karakter)" [control]="bookForm.get('not')">
       <textarea formControlName="not" class="w-full border rounded-lg px-3 py-2" rows="3"></textarea>
     </app-form-field>
 
     <div class="flex gap-3 pt-4">
       <button
         type="submit"
-        [disabled]="bookForm.get('ad')?.invalid || bookForm.get('yazar')?.invalid"
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
       >
         {{ isEdit() ? 'Güncelle' : 'Ekle' }}
       </button>
