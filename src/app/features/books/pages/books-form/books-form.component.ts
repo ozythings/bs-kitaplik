@@ -5,6 +5,7 @@ import { BooksService } from '../../services/books.service';
 import { scoreValidator } from '@shared/validators/score-validator';
 import { FormFieldComponent } from '@shared/components/form-field/form-field.component';
 import { CanComponentDeactivate } from '@core/guards/unsaved-changes.guard';
+import { NotificationService } from '@core/services/notification.service';
 
 @Component({
   selector: 'app-books-form',
@@ -16,6 +17,7 @@ export class BooksFormComponent implements CanComponentDeactivate {
   private booksService = inject(BooksService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private notification = inject(NotificationService);
 
   protected readonly isEdit = signal(false);
   protected readonly bookForm = new FormGroup({
@@ -40,7 +42,11 @@ export class BooksFormComponent implements CanComponentDeactivate {
   }
 
   protected onSubmit(): void {
-    if (this.bookForm.invalid) return;
+    if (this.bookForm.invalid) {
+      const error = this.getFirstError();
+      if (error) this.notification.show(error, 'error');
+      return;
+    }
 
     const formValue = this.bookForm.value;
     const id = this.route.snapshot.params['id'];
@@ -53,6 +59,22 @@ export class BooksFormComponent implements CanComponentDeactivate {
 
     this.bookForm.markAsPristine();
     this.router.navigate(['/kitaplar']);
+  }
+
+  private getFirstError(): string | null {
+    const controls = [
+      { name: 'ad', label: 'Kitap Adı' },
+      { name: 'yazar', label: 'Yazar' },
+      { name: 'puan', label: 'Puan' },
+    ];
+    for (const { name, label } of controls) {
+      const control = this.bookForm.get(name);
+      if (control?.errors) {
+        if (control.errors['required']) return `${label} alanı zorunludur`;
+        if (control.errors['scoreInvalid']) return control.errors['scoreInvalid'] as string;
+      }
+    }
+    return 'Formda geçersiz alanlar var';
   }
 
   hasUnsavedChanges(): boolean {
