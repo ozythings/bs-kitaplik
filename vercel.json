@@ -1,0 +1,6 @@
+{
+  "outputDirectory": "dist/bs-kitaplik/browser",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.csr.html" }
+  ]
+}
