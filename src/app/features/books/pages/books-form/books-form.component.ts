@@ -21,13 +21,13 @@ export class BooksFormComponent implements CanComponentDeactivate {
 
   protected readonly isEdit = signal(false);
   protected readonly bookForm = new FormGroup({
-    ad: new FormControl('', Validators.required),
-    yazar: new FormControl('', Validators.required),
-    tur: new FormControl(''),
+    ad: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
+    yazar: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
+    tur: new FormControl('', Validators.maxLength(50)),
     durum: new FormControl<'okunacak' | 'okunuyor' | 'okundu'>('okunacak'),
     sayfaSayisi: new FormControl<number | null>(null),
     puan: new FormControl<number | null>(null, [scoreValidator()]),
-    not: new FormControl(''),
+    not: new FormControl('', Validators.maxLength(500)),
   });
 
   constructor() {
