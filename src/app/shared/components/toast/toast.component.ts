@@ -7,5 +7,5 @@ import { NotificationService } from '@core/services/notification.service';
   templateUrl: "./toast.component.html",
 })
 export class ToastComponent {
-  protected readonly notification = inject(NotificationService).current;
+  protected readonly notifications = inject(NotificationService).current;
 }
