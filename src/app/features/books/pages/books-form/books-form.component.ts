@@ -27,7 +27,7 @@ export class BooksFormComponent implements CanComponentDeactivate {
     durum: new FormControl<'okunacak' | 'okunuyor' | 'okundu'>('okunacak'),
     sayfaSayisi: new FormControl<number | null>(null),
     puan: new FormControl<number | null>(null, [scoreValidator()]),
-    not: new FormControl('', Validators.maxLength(500)),
+    not: new FormControl('', Validators.maxLength(200)),
   });
 
   constructor() {
